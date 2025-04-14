@@ -47,6 +47,7 @@ class User(AbstractUser):
     deleted = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
