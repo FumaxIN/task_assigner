@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.utils import timezone
 from django_filters.rest_framework import(
+    OrderingFilter,
     CharFilter,
     FilterSet
 )
@@ -26,6 +27,17 @@ class TaskFilter(FilterSet):
     status = CharFilter(field_name='status', lookup_expr='iexact')
     assigned_to = CharFilter(field_name='assigned_to__external_id', lookup_expr='iexact')
     type = CharFilter(field_name='type', lookup_expr='iexact')
+
+    order_by = OrderingFilter(
+        fields=(
+            ('created_at', 'created_at'),
+            ('deadline', 'deadline'),
+        ),
+        field_labels={
+            'created_at': 'Created At',
+            'deadline': 'Deadline'
+        }
+    )
 
 class TaskViewSet(
     BaseModelViewSetPlain,

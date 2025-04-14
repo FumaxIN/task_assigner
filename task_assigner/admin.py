@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from djangoql.admin import DjangoQLSearchMixin
 
 from .models.users import User
+from .models.tasks import Task
 
 
 @admin.register(User)
@@ -61,3 +62,8 @@ class UserAdmin(DjangoQLSearchMixin, BaseUserAdmin):
 
 
 admin.site.site_header = 'Tasks Assigner Admin'
+
+
+@admin.register(Task)
+class TaskAdmin(DjangoQLSearchMixin, admin.ModelAdmin):
+    pass
