@@ -136,18 +136,6 @@ celery -A task_assigner worker --beat -l info
 - **Method**: `GET`
 - **Response**: User details including task statistics
 
-#### Create a new user
-- **URL**: `/users`
-- **Method**: `POST`
-- **Request Body**:
-  ```json
-  {
-    "email": "user@example.com",
-    "name": "User Name",
-    "password": "yourpassword"
-  }
-  ```
-- **Response**: Created user details
 
 #### Update user
 - **URL**: `/users/{external_id}`

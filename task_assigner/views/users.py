@@ -11,7 +11,6 @@ from task_assigner.serializers.users import UserSerializer
 
 class UserViewSet(
     BaseModelViewSetPlain,
-    CreateModelMixin,
     ListModelMixin,
     RetrieveModelMixin,
     DestroyModelMixin,
