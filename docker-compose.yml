@@ -1,0 +1,60 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: task_assigner
+      POSTGRES_USER: django
+      POSTGRES_PASSWORD: django
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # ports:
+    #   - "5432:5432"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  web:
+    build: .
+    command: sh -c "pip install -r requirements.txt && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+      - /app/venv/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://django:django@db:5432/task_assigner
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DB_NAME=task_assigner
+      - DB_USER=django
+      - DB_PASSWORD=django
+      - DB_HOST=db
+      - DB_PORT=5432
+
+  celery:
+    build: .
+    command: sh -c "pip install -r requirements.txt && celery -A task_assigner worker --beat -l info"
+    volumes:
+      - .:/app
+      - /app/venv/
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DATABASE_URL=postgres://django:django@db:5432/task_assigner
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - DB_NAME=task_assigner
+      - DB_USER=django
+      - DB_PASSWORD=django
+      - DB_HOST=db
+      - DB_PORT=5432
+
+volumes:
+  postgres_data:
