@@ -23,11 +23,10 @@ class UserViewSet(
     lookup_field = 'external_id'
     permission_classes = (permissions.AllowAny,)
     # permission_action_classes = {
-    #     'create': (permissions.IsAdminUser,),
-    #     'list': (permissions.AllowAny,),
-    #     'retrieve': (permissions.IsAuthenticated,),
-    #     'partial_update': (permissions.IsAuthenticated,),
-    #     'destroy': (permissions.IsAuthenticated,)
+    #     'list': (permissions.AllowAny(),),
+    #     'retrieve': (permissions.IsAuthenticated(),),
+    #     'partial_update': (permissions.IsAuthenticated(),),  # ideally a new permission: is_self
+    #     'destroy': (permissions.IsAdminUser(),)
     # }
 
     serializer_class = UserSerializer

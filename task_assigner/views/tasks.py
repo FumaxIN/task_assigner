@@ -55,11 +55,13 @@ class TaskViewSet(
     filterset_class = TaskFilter
     permission_classes = (permissions.AllowAny,)
     # permission_action_classes = {
-    #     'create': (permissions.IsAdminUser,),
-    #     'list': (permissions.AllowAny,),
-    #     'retrieve': (permissions.IsAuthenticated,),
-    #     'partial_update': (permissions.IsAuthenticated,),
-    #     'destroy': (permissions.IsAuthenticated,)
+    #     'create': (permissions.IsAdminUser(),),
+    #     'list': (permissions.AllowAny(),),
+    #     'retrieve': (permissions.AllowAny(),),
+    #     'partial_update': (permissions.IsAdminUser(),),
+    #     'destroy': (permissions.IsAdminUser(),),
+    #     'assign_task': (permissions.IsAuthenticated(),),
+    #     'complete_task': (IsAssignedToTask(),),
     # }
 
     serializer_class = TaskSerializer
