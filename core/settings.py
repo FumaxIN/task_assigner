@@ -2,6 +2,8 @@ from pathlib import Path
 from datetime import timedelta
 import environ
 
+from celery.schedules import crontab
+
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 env = environ.Env()
 
@@ -24,6 +26,8 @@ SECRET_KEY = 'django-insecure-^d55#m4$51i2z!9!jjg*hqyje)ad&gsnmfar^v2b=!5a-hbv40
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
+TIME_ZONE = "UTC"
 
 
 # Application definition
@@ -76,6 +80,35 @@ TEMPLATES = [
         },
     },
 ]
+
+# Celery
+# ------------------------------------------------------------------------------
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-timezone
+CELERY_TIMEZONE = TIME_ZONE
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-accept_content
+CELERY_ACCEPT_CONTENT = ["json"]
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-task_serializer
+CELERY_TASK_SERIALIZER = "json"
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#std:setting-result_serializer
+CELERY_RESULT_SERIALIZER = "json"
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-time-limit
+CELERY_TASK_TIME_LIMIT = 5 * 60
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-soft-time-limit
+CELERY_TASK_SOFT_TIME_LIMIT = 60
+# Broker settings (using Redis since it's easier to set up than RabbitMQ)
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default="redis://localhost:6379/0")
+
+CELERY_IMPORTS = [
+    "task_assigner.tasks",
+]
+
+CELERY_BEAT_SCHEDULE = {
+    "expire_tasks": {
+        "task": "task_assigner.tasks.expire_tasks", # Task to expire tasks that are past their deadline
+        "schedule": 60,  # Every minute
+    }
+}
 
 WSGI_APPLICATION = "core.wsgi.application"
 
