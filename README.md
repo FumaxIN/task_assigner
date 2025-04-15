@@ -8,6 +8,7 @@ Task Assigner is a robust backend service for task management that allows users 
 
 Key features:
 - User authentication with JWT
+- Custom Limit Offset Pagination
 - Task creation, assignment, and status management
 - Automated task expiration using Celery Beat scheduling
 - Redis as message broker for task queue management
@@ -171,6 +172,54 @@ celery -A task_assigner worker --beat -l info
   - `type`: Filter by task type (urgent, normal, low)
   - `order_by`: Order by fields (created_at, deadline)
 - **Response**: List of tasks
+  ```json
+  {
+  "has_previous": false,
+  "has_next": false,
+  "count": 2,
+  "offset": 0,
+  "results": [
+    {
+      "external_id": "4a4c3bf0-98c3-4778-8e9c-f5edbf8f9af8",
+      "name": "Water Plants",
+      "description": "Add water to plants",
+      "assigned_to": {
+        "external_id": "6ed80ad4-a985-4cc0-a6e0-39f52888c991",
+        "email": "testuser1@gmail.com",
+        "name": "test user",
+        "completion_percentage": 100,
+        "total_tasks_assigned": 1,
+        "total_tasks_completed": 1,
+        "total_tasks_in_progress": 0,
+        "total_tasks_failed": 0,
+        "meta": {
+          "is_admin": false,
+          "is_staff": false,
+          "is_superuser": false
+        },
+        "created_at": "2025-04-14T11:43:52.789838Z",
+        "updated_at": "2025-04-14T11:43:52.789846Z"
+      },
+      "status": "completed",
+      "type": "urgent",
+      "completed_at": "2025-04-14T19:27:09Z",
+      "created_at": "2025-04-14T19:07:19.369825Z",
+      "updated_at": "2025-04-15T02:53:35.684615Z"
+    },
+    {
+      "external_id": "783a2f8b-f7f1-454d-b075-d901d056cc18",
+      "name": "Complete Assignments",
+      "description": "",
+      "assigned_to": null,
+      "status": "failed",
+      "type": "urgent",
+      "completed_at": null,
+      "created_at": "2025-04-14T20:10:38.614755Z",
+      "updated_at": "2025-04-15T02:56:09.745098Z"
+    }
+  ]
+  }
+  ```
 
 #### Get task detail
 - **URL**: `/tasks/{external_id}`
