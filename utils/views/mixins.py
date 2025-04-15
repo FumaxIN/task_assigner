@@ -75,6 +75,7 @@ class GetPermissionClassesMixin:
         get_permissions.
         """
         try:
+            print("self.action", self.action)
             if self.action == "me":
                 return super().get_permissions()
             action_permissions = tuple(self.permission_action_classes[self.action])

@@ -92,6 +92,14 @@ python manage.py runserver
 celery -A task_assigner worker --beat -l info
 ```
 
+## Permissions
+
+Currently, all users can use CRUD and other actions like complete on tasks for simplicity. However, this can be changed by uncommenting `permission_action_classes` in `views/tasks.py`, which will enable the following permissions:
+
+- Only admins can create, update, and delete tasks
+- Authenticated users can assign tasks (ideally a user should only be able to assign to himself only)
+- Only users who are assigned a task can complete it
+
 ## API Documentation
 
 ### Authentication APIs

@@ -15,6 +15,6 @@ class IsAssignedToTask(permissions.BasePermission):
             return False
 
         # Check if the user is assigned to the task
-        task_id = view.kwargs.get('pk')
-        task = get_object_or_404(Task, pk=task_id)
+        task_id = view.kwargs.get('external_id')
+        task = get_object_or_404(Task, external_id=task_id)
         return task.assigned_to == request.user
