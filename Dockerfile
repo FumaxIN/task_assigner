@@ -35,4 +35,4 @@ COPY . .
 EXPOSE 8000
 
 # Default command (can be overridden in docker-compose)
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py loaddata task_assigner/fixtures/*.json && python manage.py runserver 0.0.0.0:8000"]

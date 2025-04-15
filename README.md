@@ -13,6 +13,7 @@ Key features:
 - Automated task expiration using Celery Beat scheduling
 - Redis as message broker for task queue management
 - Comprehensive API for task and user management
+- Pre-loaded fixtures for quick setup with sample users and tasks
 
 ## Requirements
 
@@ -77,9 +78,10 @@ CELERY_BROKER_URL=redis://localhost:6379/0
 CELERY_RESULT_BACKEND=redis://localhost:6379/0
 ```
 
-7. Run migrations:
+7. Run migrations and load fixture data:
 ```bash
 python manage.py migrate
+python manage.py loaddata task_assigner/fixtures/*.json
 ```
 
 8. Start the Django development server:
